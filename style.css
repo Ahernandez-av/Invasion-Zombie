@@ -8,6 +8,18 @@ body {
   overflow: hidden;
 }
 
+button{
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
 .floor {
   position: absolute;
   top: 0;

@@ -3,13 +3,23 @@ const ctx = canvas.getContext('2d')
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 
+const $start = document.querySelector('#start')
+const $restart = document.querySelector('#restart')
+
 //load images
 const images = {} //here we store the images
 images.player = new Image() // we call the images object for the images object
 images.player.src = 'images/character.png' //here we set the src to be stylesheet
+
 const characterActions = ['up', 'right', 'down right']
 let charactersNumber = 10
 const characters = []
+
+let game = false;
+let keys = true;
+let frames = 0;
+
+
 
 class Character {
   constructor() {
@@ -66,6 +76,8 @@ class Character {
   }
 }
 
+
+//create characters
 for (let i = 0; i < charactersNumber; i++) {
   characters.push(new Character())
 }
@@ -84,6 +96,9 @@ for (let i = 0; i < charactersNumber; i++) {
   let playerSpeed = 6
 */
 
+
+// helper function to draw sprites from the spritesheet
+
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){
   /*
   .drawImage(image, dx, dy)
@@ -95,7 +110,14 @@ function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){
   ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
 }
 
+
 function animate() {
+  frames++
+  console.log(frames)
+  if (frames === 1000) {
+    game = true;
+    stopGame()
+  }
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   characters.forEach(e => {
     e.draw()
@@ -126,8 +148,54 @@ function animate() {
   */
 }
 
-window.onload = setInterval(animate, 1000 / 60)
+function handleKey(e){
+  const key = e.key;  
+  const keycode = e.keyCode;  
 
+  if (keys){
+    
+    if(keycode===32 && game === false){
+      startGame();
+      game = true;
+    } 
+  }
+  
+  // if (keycode===32 && game === true){
+  //     window.location.reload(true);
+  // }
+  
+}
+
+function startGame(){
+  if (!game){
+    console.log('game on!');
+    charactersInterval = setInterval(animate, 1000 / 60);
+    $start.classList.remove('visible')
+  } 
+}
+
+function stopGame(){
+  if(game){
+    clearInterval(charactersInterval);
+    game = false
+    $restart.classList.add('visible')
+  }
+}
+
+function restart(){
+  window.location.reload(true);
+}
+
+
+//window.onload = setInterval(animate, 1000 / 60)
+
+document.addEventListener('keydown',  handleKey);
+
+$start.addEventListener('click', startGame)
+$restart.addEventListener('click', restart)
+
+
+//to prevent resizing issues
 window.addEventListener('resize', function(){
   canvas.height = window.innerHeight
   canvas.width = window.innerWidth
