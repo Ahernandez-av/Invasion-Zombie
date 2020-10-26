@@ -148,23 +148,23 @@ function animate() {
   */
 }
 
-function handleKey(e){
-  const key = e.key;  
-  const keycode = e.keyCode;  
+// function handleKey(e){
+//   const key = e.key;  
+//   const keycode = e.keyCode;  
 
-  if (keys){
+//   if (keys){
     
-    if(keycode===32 && game === false){
-      startGame();
-      game = true;
-    } 
-  }
+//     if(keycode===32 && game === false){
+//       startGame();
+//       game = true;
+//     } 
+//   }
   
-  // if (keycode===32 && game === true){
-  //     window.location.reload(true);
-  // }
+//   // if (keycode===32 && game === true){
+//   //     window.location.reload(true);
+//   // }
   
-}
+// }
 
 function startGame(){
   if (!game){
@@ -189,7 +189,7 @@ function restart(){
 
 //window.onload = setInterval(animate, 1000 / 60)
 
-document.addEventListener('keydown',  handleKey);
+//document.addEventListener('keydown',  handleKey);
 
 $start.addEventListener('click', startGame)
 $restart.addEventListener('click', restart)
@@ -200,3 +200,17 @@ window.addEventListener('resize', function(){
   canvas.height = window.innerHeight
   canvas.width = window.innerWidth
 })
+
+
+// startButton.addEventListener ('click', startGame);
+// function whack (e) {
+//     score++;
+//     this.style.backgroundImage = url ('');  /*imagen de yoda sorprendido porque le hicieron click */
+//     this.style.pointerEvents = 'none' /*desactiva las interacciones del fondo */
+//     setTimeout(() => {
+//         this.style.backgroundImage = url (''); /*aquí la imagen de yoda cambia */
+//         this.style.pointerEvents = 'all'
+//     }, 800);
+//     scoreBoard.textContent = score;
+// }
+// moles.forEach(mole => mole.addEventListener('click', whack));
