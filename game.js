@@ -15,9 +15,10 @@ const characterActions = ['up', 'right', 'down right']
 let charactersNumber = 10
 const characters = []
 
-let game = false;
-let keys = true;
-let frames = 0;
+let game = false
+let keys = true
+let frames = 0
+let lives = 3
 
 
 
@@ -25,19 +26,25 @@ class Character {
   constructor() {
     this.width = 103.0625
     this.height = 113.125
+    this.actionY = 7
+    this.actionX = 0
+    this.click = false
     this.x = Math.random() * $canvas.width
     this.y = Math.random() * $canvas.height
-    this.speed = (Math.random() * 1.5) + 3.5
+    this.speed = (Math.random() * 1) + 3.5
     this.action = characterActions[Math.floor(Math.random() * characterActions.length)]
     if (this.action === 'up') {
       this.frameY = 0
-      this.frameX = 15
+      this.frameX = 3
+      this.maxFrame = 15
     } else if (this.action === 'right'){
       this.frameY = 3
-      this.frameX = 13
+      this.frameX = 3
+      this.maxFrame = 13
     } else if (this.action === 'down right'){
       this.frameY = 4
-      this.frameX = 15
+      this.frameX = 3
+      this.maxFrame = 15
     }
   }
   draw(){
@@ -47,34 +54,47 @@ class Character {
       this.x, this.y, this.width, this.height
       )
 
-      if (this.frameX < 13) this.frameX++;
+      if (this.frameX < this.maxFrame) this.frameX++;
       else this.frameX = 3
+  }
+  drawAction(){
+    drawSprite(
+      images.player,
+      this.width * this.actionX, this.height * this.actionY, this.width, this.height,
+      this.x, this.y, this.width, this.height
+      )
+
+      if (this.actionX < 9) this.actionX++;
   }
   update(){
     if (this.action === 'right') {
       if (this.x < $canvas.width + this.width) this.x += this.speed
       else {
         this.x = 0 - this.width
-        this.y = Math.random() * $canvas.height - this.height //-height is to be sure that it wont spawn to low
+        this.y = Math.random() * ($canvas.height - this.height) //-height is to be sure that it wont spawn to low
       }
     } else if (this.action === 'up') {
       if (this.y > 0 - this.height) this.y -= this.speed
       else {
         this.y = $canvas.height + this.height
-        this.x = Math.random() * $canvas.width - this.width
+        this.x = Math.random() * ($canvas.width - this.width)
       }
     } else if (this.action === 'down right') {
       if (this.y + this.height < $canvas.height + this.height || this.x + this.width < $canvas.width + this.width) {
         this.y += this.speed
         this.x += this.speed
       }
-      else {
-        this.y = 0 - this.height
-        this.x = Math.random() * $canvas.width - this.width
-      }
     }
   }
 }
+
+
+
+// let actionInterval = setInterval(() => {
+//   console.log('hello again')
+//   ctx.clearRect(this.x, this.y, this.width, this.height)
+//   this.drawAction()
+// }, 80)
 
 
 //create characters
@@ -113,7 +133,7 @@ function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){
 
 function animate() {
   frames++
-  console.log(frames)
+  //console.log(frames)
   if (frames === 1000) {
     game = true;
     stopGame()
@@ -190,6 +210,49 @@ function restart(){
 //window.onload = setInterval(animate, 1000 / 60)
 
 //document.addEventListener('keydown',  handleKey);
+
+
+
+//Intersec element on canvas
+function isIntersect(point, elm) {
+  if (point.x > elm.x && point.x < elm.x + elm.width && point.y > elm.y && point.y < elm.y + elm.height) {
+    return true
+  } else {
+    return false
+  }
+}
+
+//Add event listener on click to elements
+canvas.addEventListener('click', (e) => {
+  const pos = {
+    x: e.clientX,
+    y: e.clientY
+  };
+  console.log(e)
+  characters.forEach((character, index) => {
+    if (isIntersect(pos, character)) {
+      console.log('hit an element')
+      let single = character
+      let time = 0
+      console.log(single)
+      console.log(characters)
+      characters.splice(index, 1)
+      let actionInterval = setInterval(() => {
+        time++
+        console.log(time)
+        ctx.clearRect(single.x, single.y, single.width, single.height)
+        single.drawAction()
+        if (time > 15) {
+          clearInterval(actionInterval)
+        }
+      }, 15)
+    }
+  });
+});
+
+
+
+
 
 $start.addEventListener('click', startGame)
 $restart.addEventListener('click', restart)
