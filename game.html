@@ -11,7 +11,7 @@
 
     <div class="floor"></div>
      <!-- <button id="start" class="visible">Start</button> -->
-     <button id="restart">Restart</button>
+     
      
      <canvas id="canvas"></canvas>
      <div>
@@ -23,16 +23,21 @@
         <p class="level"></p>
      </div>
      <!-- /*100 de alto y 100 de ancho y background negro transparente*/ -->
-     <!-- <div id="game-over"> 
-      <div>
-        <h1>game over</h1> 
-        <p>Gracias por jugar</p>
-      </div> 
-      <div>
-         <button id="home">Home</button>
-      </div> -->
+     <div class="game-over"> 
+       <div class="gameover-container">
+         
+           <div class="gameover-message">
+               <h1>Game Over</h1> 
+               <p>Gracias por jugar</p>
+            </div>
+           <div  class ="gameover-buttons">
+               <a id="restart">Restart</a>
+               <a id="home" href="index.html">Home</a>
+           </div> 
 
-     <!-- </div> -->
+       </div>
+      
+     </div>
  </header>
   <script src="game.js"></script>
 </body>

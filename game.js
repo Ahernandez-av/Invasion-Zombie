@@ -8,6 +8,7 @@ const $restart = document.querySelector('#restart')
 const $levelDisplay = document.querySelector(".level")
 const $zombiesToWin = document.querySelector('.to-win')
 const $lifeContainer = document.querySelector('.lives__container')
+const $gameOver = document.querySelector ('.game-over')
 
 //load images
 const images = {} //here we store the images
@@ -287,7 +288,8 @@ function startGame(){
 function stopGame(){
     clearInterval(charactersInterval);
     game = false
-    $restart.classList.add('visible')
+    // $restart.classList.add('visible')
+    $gameOver.style.display = 'block'
 }
 
 function restart(){
