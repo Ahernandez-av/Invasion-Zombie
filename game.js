@@ -12,9 +12,13 @@ const $lifeContainer = document.querySelector('.lives__container')
 
 //load images
 const images = {} //here we store the images
-images.player = new Image() // we call the images object for the images object
-images.player.src = 'images/jimmy.png' //here we set the src to be stylesheet
-const jimmy = images.player
+images.jimmy = new Image() // we call the images object for the images object
+images.jimmy.src = 'images/jimmy.png' //here we set the src to be stylesheet
+images.cindy = new Image()
+images.cindy.src = 'images/cindy.png'
+
+const jimmy = images.jimmy
+const cindy = images.cindy
 
 
 const characterMovement = ['left', 'right']
@@ -119,9 +123,38 @@ class Jimmy extends Zombie {
   }
 }
 
-function clearSelected(){
-  selectedZombies= []
+class Cindy extends Zombie {
+  constructor(type, zombieType = cindy) {
+    super(zombieType)
+    this.type = type
+    this.actionX = 0
+    if (this.type == 'good') {
+      this.actionY = 3
+      this.actionMax = 10
+    } else if(this.type == 'bad') {
+      this.actionY = 1
+      this.actionMax = 10
+    }
+  }
+  drawAction(){
+    drawSprite(
+      this.zombieSheet,
+      this.width * this.actionX, this.height * this.actionY, this.width, this.height,
+      this.x, this.y, this.width, this.height
+      )
+
+      if (this.actionX < this.actionMax) this.actionX++;
+      else this.delete = true
+  }
+  applyEffect(){
+    if (this.type == 'good') {
+      removeZombie()
+    } else {
+      addZombie()
+    }
+  }
 }
+
 
 
 // //create characters
@@ -241,10 +274,10 @@ function createZombies(obj){
   }
   if ('cindy' in obj) {
     for (let i = 0; i < obj.cindy.good; i++) {
-      characters.push(new Jimmy('good'))
+      characters.push(new Cindy('good'))
     }
     for (let i = 0; i < obj.cindy.bad; i++) {
-      characters.push(new Jimmy('bad'))
+      characters.push(new Cindy('bad'))
     }
   }
   console.log(characters.length)
@@ -283,6 +316,15 @@ function removeZombie(){
   zombiesToWin--
   $zombiesToWin.innerHTML = zombiesToWin
   if (zombiesToWin == 0) resetLevel()
+}
+
+function addZombie(){
+  zombiesToWin++
+  $zombiesToWin.innerHTML = zombiesToWin
+}
+
+function clearSelected(){
+  selectedZombies= []
 }
 
 
