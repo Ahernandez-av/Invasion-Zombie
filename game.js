@@ -66,13 +66,13 @@ class Zombie {
       if (this.x < $canvas.width + this.width) this.x += this.speed
       else {
         this.x = 0 - this.width
-        this.y = Math.random() * ($canvas.height - this.height) //-height is to be sure that it wont spawn to low
+        this.y = Math.random() * $canvas.height - this.height //-height is to be sure that it wont spawn to low
       }
     } else if (this.action === 'left') {
       if (this.x > 0 - this.height) this.x -= this.speed
       else {
         this.x = $canvas.width + this.height
-        this.y = Math.random() * ($canvas.height - this.height)
+        this.y = Math.random() * $canvas.height - this.height
       }
     } else if (this.action === 'down right') {
       if (this.y + this.height < $canvas.height + this.height || this.x + this.width < $canvas.width + this.width) {
