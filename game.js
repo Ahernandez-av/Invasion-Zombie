@@ -5,6 +5,10 @@ canvas.width = window.innerWidth
 
 const $restart = document.querySelector('#restart')
 
+const $levelDisplay = document.querySelector(".level")
+const $zombiesToWin = document.querySelector('.to-win')
+const $lifeContainer = document.querySelector('.lives__container')
+
 //load images
 const images = {} //here we store the images
 images.player = new Image() // we call the images object for the images object
@@ -13,12 +17,14 @@ const jimmy = images.player
 
 
 const characterMovement = ['left', 'right']
-let charactersNumber = 10
-let zombieCounter = 5
-const characters = []
+let characters = []
+let totalZombies = 10
+let zombiesToWin = 5
+let currentLevel = 0
+let lives = 3
 
-let game = false
 let frames = 0
+let charactersInterval
 
 
 class Zombie {
@@ -55,16 +61,6 @@ class Zombie {
       if (this.frameX < this.maxFrame) this.frameX++;
       else this.frameX = 3
   }
-  // drawAction(){
-  //   drawSprite(
-  //     this.zombieSheet,
-  //     this.width * this.actionX, this.height * this.actionY, this.width, this.height,
-  //     this.x, this.y, this.width, this.height
-  //     )
-
-  //     if (this.actionX < this.actionMax) this.actionX++;
-  //     else this.delete = true
-  // }
   update(){
     if (this.action === 'right') {
       if (this.x < $canvas.width + this.width) this.x += this.speed
@@ -120,10 +116,10 @@ class Jimmy extends Zombie {
 }
 
 
-//create characters
-for (let i = 0; i < charactersNumber - 1; i++) {
-  characters.push(new Jimmy('good'))
-}
+// //create characters
+// for (let i = 0; i < totalZombies - 1; i++) {
+//   characters.push(new Jimmy('good'))
+// }
 
 /*
   const playerWidth = 103.0625 //widht of the spritesheet divided by the amount of columns
@@ -166,24 +162,127 @@ function animate() {
   })
 }
 
-function removeZombie(){
-  if (zombieCounter > 0) {
-    zombieCounter--
-  } else stopGame()
+const levels = [
+  {
+    levelName: "level 1",
+    zombies: 10,
+    zombiesToWin: 5,
+    jimmy: {
+      good: 6,
+      bad:4
+    }
+  },
+  {
+    levelName: "level 2",
+    zombies: 15,
+    zombiesToWin: 7,
+    jimmy: {
+      good: 6,
+      bad:4
+    },
+    cindy: {
+      good: 3,
+      bad:2
+    }
+  }
+]
+
+function setLevel(levels){
+  let level = levels[currentLevel]
+  console.log(level.levelName)
+  //clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  //set lives
+  setLives()
+  //Level display
+  $levelDisplay.innerHTML = level.levelName
+  //Zombies to Win
+  zombiesToWin = level.zombiesToWin
+  $zombiesToWin.innerHTML = zombiesToWin
+  //create characters
+  createZombies(level)
+  //Start Game
+  startGame()
 }
 
+function resetLevel(){
+  currentLevel++
+  console.log(typeof currentLevel)
+  console.log(`next Level ${currentLevel}`)
+  //clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  //reset lives
+  resetLives()
+  //reset Level display
+  $levelDisplay.innerHTML = " "
+  //reset Zombies to Win
+  zombiesToWin = 0
+  //reset characters
+  characters = []
+  //set new level
+  setLevel(levels)
+}
+
+function createZombies(obj){
+  if ('jimmy' in obj) {
+    for (let i = 0; i < obj.jimmy.good; i++) {
+      characters.push(new Jimmy('good'))
+    }
+    for (let i = 0; i < obj.jimmy.bad; i++) {
+      characters.push(new Jimmy('bad'))
+    }
+  }
+  if ('cindy' in obj) {
+    for (let i = 0; i < obj.cindy.good; i++) {
+      characters.push(new Jimmy('good'))
+    }
+    for (let i = 0; i < obj.cindy.bad; i++) {
+      characters.push(new Jimmy('bad'))
+    }
+  }
+  console.log(characters.length)
+}
+
+function setLives(){
+
+  for (let i = 0; i < lives; i++) {
+    let $heart = document.createElement('img');
+    $heart.src = 'images/heart.svg'
+    $heart.classList.add('heart')
+    $lifeContainer.appendChild($heart)
+  }
+}
+
+function resetLives(){
+  let child = $lifeContainer.lastElementChild
+  while (child) {
+    $lifeContainer.removeChild(child)
+    child = $lifeContainer.lastElementChild
+  }
+}
+
+
 function removeLife(){
-  let $lifeContainer = document.querySelector('.lives__container')
   let $hearts = document.querySelectorAll('.heart')
 
   if ($hearts.length > 0) {
     console.log($lifeContainer)
     $lifeContainer.removeChild($hearts[$hearts.length-1])
-  } else stopGame()
+  }
+  $hearts = document.querySelectorAll('.heart')
+  if($hearts.length == 0) stopGame()
 }
+
+function removeZombie(){
+  zombiesToWin--
+  $zombiesToWin.innerHTML = zombiesToWin
+  if (zombiesToWin == 0) resetLevel()
+}
+
 
 function startGame(){
     console.log('game on!');
+    if (charactersInterval) return
     charactersInterval = setInterval(animate, 1000 / 40);
 }
 
@@ -198,7 +297,7 @@ function restart(){
 }
 
 
-window.onload = startGame()
+window.onload = setLevel(levels)
 
 
 

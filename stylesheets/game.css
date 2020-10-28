@@ -21,6 +21,18 @@ button{
   z-index: 5;
 }
 
+.level {
+  position: absolute;
+  z-index: 5;
+  top: 20px;
+}
+
+.to-win {
+  position: absolute;
+  z-index: 5;
+  top: 60px;
+}
+
 .heart {
   display: inline-block;
   margin-right: 4px;
