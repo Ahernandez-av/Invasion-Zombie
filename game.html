@@ -2,14 +2,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/stylesheets/game.css">
+    <title>Game</title>
+    <link rel="stylesheet" href="game.css">
+    
 </head>
 <body>
-  <button id="start" class="visible">Start</button>
-  <button id="restart">Restart</button>
-  <div class="floor"></div>
-  <canvas id="canvas"></canvas>
+  <header>
+
+    <div class="floor"></div>
+     <!-- <button id="start" class="visible">Start</button> -->
+     <button id="restart">Restart</button>
+     
+     <canvas id="canvas"></canvas>
+     <div>
+        <div class="lives__container">
+        </div>
+        <div id="zombies">
+             <span class="to-win"></span>
+        </div>
+        <p class="level"></p>
+     </div>
+     <!-- /*100 de alto y 100 de ancho y background negro transparente*/ -->
+     <!-- <div id="game-over"> 
+      <div>
+        <h1>game over</h1> 
+        <p>Gracias por jugar</p>
+      </div> 
+      <div>
+         <button id="home">Home</button>
+      </div> -->
+
+     <!-- </div> -->
+ </header>
   <script src="game.js"></script>
 </body>
 </html>
+
