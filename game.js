@@ -124,7 +124,6 @@ class Jimmy extends Zombie {
 /*
   const playerWidth = 103.0625 //widht of the spritesheet divided by the amount of columns
   const playerHeight = 113.125 //height of the spritesheet divided by the amount of rows
-
   //to get the frame of the charater in the 'grid' of the stylesheet
   let playerFrameX = 3
   let playerFrameY = 3
@@ -137,7 +136,6 @@ function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){
   /*
   .drawImage(image, dx, dy)
   .drawImage(image, dx, dy, dw, dh)
-
                   |  source image  | image position
   .drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
   */

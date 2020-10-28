@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Jolly+Lodger&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 100%;
+  height: 100%;
+ 
+  background-color: black;
+  font-size: 2em;
+  /* display: flexbox; */
+  /* flex-direction: column;
+  text-align: center;
+  align-items: center; */
+  /* flex-direction: column; */
+
+}
+
+.lives__container {
+  position: absolute;
+  background-image: url("images/Lives-container.svg");
+  background-size: 100% 100%;
+  width: 105;
+  height: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart {
+  width: 30;
+  height: 25;
+  display: inline-block;
+}
+
+#zombies {
+  position: absolute;
+  background-image: url("images/enemy-container.svg");
+  background-size: 100% 100%;
+  width: 75;
+  height: 30;
+  left: 130px;
+}
+
+.to-win {
+  color: white;
+  font-family: 'Jolly Lodger', cursive;
+  position: absolute;
+  right: 22px;
+  top: 5px;
+}
+
+.level {
+  position: absolute;
+  z-index: 5;
+  top: 20px;
+}
+#start{
+  position: absolute;
+  z-index: 200;
+  left: 50%;
+  top: 50%;
+  background-image: url("images/button.svg");
+  background-repeat: no-repeat;
+  color: white;
+  cursor: pointer;
+  width: 95; 
+  height: 41;
+}
+
+button{
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  display: none;
+}
+
+#return {
+  background-image: url("images/button.svg");
+  background-repeat: no-repeat;
+}
+
+.visible {
+  display: block;
+}
+
+.floor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("images/background.png");
+  background-size: contain;
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
