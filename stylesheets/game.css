@@ -16,6 +16,16 @@ button{
   display: none;
 }
 
+.lives {
+  position: absolute;
+  z-index: 5;
+}
+
+.heart {
+  display: inline-block;
+  margin-right: 4px;
+}
+
 .visible {
   display: block;
 }
