@@ -3,51 +3,62 @@ const ctx = canvas.getContext('2d')
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 
-const $start = document.querySelector('#start')
 const $restart = document.querySelector('#restart')
+
+const $levelDisplay = document.querySelector(".level")
+const $zombiesToWin = document.querySelector('.to-win')
+const $lifeContainer = document.querySelector('.lives__container')
 
 //load images
 const images = {} //here we store the images
 images.player = new Image() // we call the images object for the images object
-images.player.src = 'images/character.png' //here we set the src to be stylesheet
-
-const characterActions = ['up', 'right', 'down right']
-let charactersNumber = 10
-const characters = []
-
-let game = false;
-let keys = true;
-let frames = 0;
+images.player.src = 'images/jimmy.png' //here we set the src to be stylesheet
+const jimmy = images.player
 
 
+const characterMovement = ['left', 'right']
+let characters = []
+let totalZombies = 10
+let zombiesToWin = 5
+let currentLevel = 0
+let lives = 3
 
-class Character {
-  constructor() {
-    this.width = 103.0625
-    this.height = 113.125
+let frames = 0
+let charactersInterval
+
+
+class Zombie {
+  constructor(zombieType) {
+    this.index = null
+    this.zombieSheet = zombieType
+    this.width = 115.666667
+    this.height = 110.75
+    this.frameX = 0
+    // this.actionX = actionX
+    // this.actionY = actionY
+    // this.actionMax = actionMax
+    this.delete = false
+    this.click = false
     this.x = Math.random() * $canvas.width
     this.y = Math.random() * $canvas.height
-    this.speed = (Math.random() * 1.5) + 3.5
-    this.action = characterActions[Math.floor(Math.random() * characterActions.length)]
-    if (this.action === 'up') {
+    this.speed = (Math.random() * 0.5) + 3.5
+    this.action = characterMovement[Math.floor(Math.random() * characterMovement.length)]
+    if (this.action === 'left') {
       this.frameY = 0
-      this.frameX = 15
+      this.maxFrame = 8
     } else if (this.action === 'right'){
-      this.frameY = 3
-      this.frameX = 13
-    } else if (this.action === 'down right'){
-      this.frameY = 4
-      this.frameX = 15
+      this.frameY = 2
+      this.maxFrame = 8
     }
   }
   draw(){
     drawSprite(
-      images.player,
+      this.zombieSheet,
       this.width * this.frameX, this.height * this.frameY, this.width, this.height,
       this.x, this.y, this.width, this.height
       )
 
-      if (this.frameX < 13) this.frameX++;
+      if (this.frameX < this.maxFrame) this.frameX++;
       else this.frameX = 3
   }
   update(){
@@ -57,43 +68,65 @@ class Character {
         this.x = 0 - this.width
         this.y = Math.random() * $canvas.height - this.height //-height is to be sure that it wont spawn to low
       }
-    } else if (this.action === 'up') {
-      if (this.y > 0 - this.height) this.y -= this.speed
+    } else if (this.action === 'left') {
+      if (this.x > 0 - this.height) this.x -= this.speed
       else {
-        this.y = $canvas.height + this.height
-        this.x = Math.random() * $canvas.width - this.width
+        this.x = $canvas.width + this.height
+        this.y = Math.random() * $canvas.height - this.height
       }
     } else if (this.action === 'down right') {
       if (this.y + this.height < $canvas.height + this.height || this.x + this.width < $canvas.width + this.width) {
         this.y += this.speed
         this.x += this.speed
       }
-      else {
-        this.y = 0 - this.height
-        this.x = Math.random() * $canvas.width - this.width
-      }
+    }
+  }
+}
+
+class Jimmy extends Zombie {
+  constructor(type, zombieType = jimmy) {
+    super(zombieType)
+    this.type = type
+    this.actionX = 0
+    if (this.type == 'good') {
+      this.actionY = 3
+      this.actionMax = 10
+    } else if(this.type == 'bad') {
+      this.actionY = 1
+      this.actionMax = 10
+    }
+  }
+  drawAction(){
+    drawSprite(
+      this.zombieSheet,
+      this.width * this.actionX, this.height * this.actionY, this.width, this.height,
+      this.x, this.y, this.width, this.height
+      )
+
+      if (this.actionX < this.actionMax) this.actionX++;
+      else this.delete = true
+  }
+  applyEffect(){
+    if (this.type == 'good') {
+      removeZombie()
+    } else {
+      removeLife()
     }
   }
 }
 
 
-//create characters
-for (let i = 0; i < charactersNumber; i++) {
-  characters.push(new Character())
-}
+// //create characters
+// for (let i = 0; i < totalZombies - 1; i++) {
+//   characters.push(new Jimmy('good'))
+// }
 
 /*
   const playerWidth = 103.0625 //widht of the spritesheet divided by the amount of columns
   const playerHeight = 113.125 //height of the spritesheet divided by the amount of rows
-
   //to get the frame of the charater in the 'grid' of the stylesheet
   let playerFrameX = 3
   let playerFrameY = 3
-
-  //player position and speed
-  let playerX = 0
-  let playerY = 0
-  let playerSpeed = 6
 */
 
 
@@ -103,7 +136,6 @@ function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){
   /*
   .drawImage(image, dx, dy)
   .drawImage(image, dx, dy, dw, dh)
-
                   |  source image  | image position
   .drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
   */
@@ -113,73 +145,149 @@ function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){
 
 function animate() {
   frames++
-  console.log(frames)
-  if (frames === 1000) {
-    game = true;
-    stopGame()
-  }
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   characters.forEach(e => {
-    e.draw()
-    e.update()
+    if (!e.click) {
+      e.draw()
+      e.update()
+    } else if (e.click) {
+      e.drawAction()
+      if (e.delete) {
+        e.applyEffect()
+        characters.splice(e.index, 1)
+      }
+    }
   })
-  /*
-    drawSprite(
-    images.player,
-    playerWidth * playerFrameX, playerHeight * playerFrameY, playerWidth, playerHeight,
-    playerX, playerY, playerWidth, playerHeight
-    )
-    //Animte Sprites
-
-    //
-     right movement animation
-     starts on the col 3 - row 3
-     the total amount of frames are 13
-     if it get to the final frame it goes back to the third again (0,1,2 are iddle animations)
-    //
-
-    if (playerFrameX < 13) playerFrameX++;
-    else playerFrameX = 3
-
-
-    //Movement of sprites
-    if (playerX < canvas.width + playerWidth) playerX += playerSpeed
-    else playerX = 0 - playerWidth //this reset the the player x
-  */
 }
 
-// function handleKey(e){
-//   const key = e.key;  
-//   const keycode = e.keyCode;  
+const levels = [
+  {
+    levelName: "level 1",
+    zombies: 10,
+    zombiesToWin: 5,
+    jimmy: {
+      good: 6,
+      bad:4
+    }
+  },
+  {
+    levelName: "level 2",
+    zombies: 15,
+    zombiesToWin: 7,
+    jimmy: {
+      good: 6,
+      bad:4
+    },
+    cindy: {
+      good: 3,
+      bad:2
+    }
+  }
+]
 
-//   if (keys){
-    
-//     if(keycode===32 && game === false){
-//       startGame();
-//       game = true;
-//     } 
-//   }
-  
-//   // if (keycode===32 && game === true){
-//   //     window.location.reload(true);
-//   // }
-  
-// }
+function setLevel(levels){
+  let level = levels[currentLevel]
+  console.log(level.levelName)
+  //clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  //set lives
+  setLives()
+  //Level display
+  $levelDisplay.innerHTML = level.levelName
+  //Zombies to Win
+  zombiesToWin = level.zombiesToWin
+  $zombiesToWin.innerHTML = zombiesToWin
+  //create characters
+  createZombies(level)
+  //Start Game
+  startGame()
+}
+
+function resetLevel(){
+  currentLevel++
+  console.log(typeof currentLevel)
+  console.log(`next Level ${currentLevel}`)
+  //clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  //reset lives
+  resetLives()
+  //reset Level display
+  $levelDisplay.innerHTML = " "
+  //reset Zombies to Win
+  zombiesToWin = 0
+  //reset characters
+  characters = []
+  //set new level
+  setLevel(levels)
+}
+
+function createZombies(obj){
+  if ('jimmy' in obj) {
+    for (let i = 0; i < obj.jimmy.good; i++) {
+      characters.push(new Jimmy('good'))
+    }
+    for (let i = 0; i < obj.jimmy.bad; i++) {
+      characters.push(new Jimmy('bad'))
+    }
+  }
+  if ('cindy' in obj) {
+    for (let i = 0; i < obj.cindy.good; i++) {
+      characters.push(new Jimmy('good'))
+    }
+    for (let i = 0; i < obj.cindy.bad; i++) {
+      characters.push(new Jimmy('bad'))
+    }
+  }
+  console.log(characters.length)
+}
+
+function setLives(){
+
+  for (let i = 0; i < lives; i++) {
+    let $heart = document.createElement('img');
+    $heart.src = 'images/heart.svg'
+    $heart.classList.add('heart')
+    $lifeContainer.appendChild($heart)
+  }
+}
+
+function resetLives(){
+  let child = $lifeContainer.lastElementChild
+  while (child) {
+    $lifeContainer.removeChild(child)
+    child = $lifeContainer.lastElementChild
+  }
+}
+
+
+function removeLife(){
+  let $hearts = document.querySelectorAll('.heart')
+
+  if ($hearts.length > 0) {
+    console.log($lifeContainer)
+    $lifeContainer.removeChild($hearts[$hearts.length-1])
+  }
+  $hearts = document.querySelectorAll('.heart')
+  if($hearts.length == 0) stopGame()
+}
+
+function removeZombie(){
+  zombiesToWin--
+  $zombiesToWin.innerHTML = zombiesToWin
+  if (zombiesToWin == 0) resetLevel()
+}
+
 
 function startGame(){
-  if (!game){
     console.log('game on!');
-    charactersInterval = setInterval(animate, 1000 / 60);
-    $start.classList.remove('visible')
-  } 
+    if (charactersInterval) return
+    charactersInterval = setInterval(animate, 1000 / 40);
 }
 
 function stopGame(){
-  if(game){
     clearInterval(charactersInterval);
     game = false
     $restart.classList.add('visible')
-  }
 }
 
 function restart(){
@@ -187,11 +295,37 @@ function restart(){
 }
 
 
-//window.onload = setInterval(animate, 1000 / 60)
+window.onload = setLevel(levels)
 
-//document.addEventListener('keydown',  handleKey);
 
-$start.addEventListener('click', startGame)
+
+//Intersec element on canvas
+function isIntersect(point, elm) {
+  if (point.x > elm.x && point.x < elm.x + elm.width && point.y > elm.y && point.y < elm.y + elm.height) {
+    return true
+  } else {
+    return false
+  }
+}
+
+//Add event listener on click to elements
+canvas.addEventListener('click', (e) => {
+  const pos = {
+    x: e.clientX,
+    y: e.clientY
+  };
+  console.log(e)
+  characters.forEach((character, index) => {
+    if (isIntersect(pos, character)) {
+      console.log('hit an element')
+      console.log(character)
+      character.click = true
+      character.index = index
+    }
+  });
+});
+
+
 $restart.addEventListener('click', restart)
 
 
@@ -200,17 +334,3 @@ window.addEventListener('resize', function(){
   canvas.height = window.innerHeight
   canvas.width = window.innerWidth
 })
-
-
-// startButton.addEventListener ('click', startGame);
-// function whack (e) {
-//     score++;
-//     this.style.backgroundImage = url ('');  /*imagen de yoda sorprendido porque le hicieron click */
-//     this.style.pointerEvents = 'none' /*desactiva las interacciones del fondo */
-//     setTimeout(() => {
-//         this.style.backgroundImage = url (''); /*aquí la imagen de yoda cambia */
-//         this.style.pointerEvents = 'all'
-//     }, 800);
-//     scoreBoard.textContent = score;
-// }
-// moles.forEach(mole => mole.addEventListener('click', whack));

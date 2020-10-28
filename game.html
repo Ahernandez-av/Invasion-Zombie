@@ -10,22 +10,29 @@
   <header>
 
     <div class="floor"></div>
-     <button id="start" class="visible">Start</button>
+     <!-- <button id="start" class="visible">Start</button> -->
      <button id="restart">Restart</button>
      
      <canvas id="canvas"></canvas>
      <div>
-        <div id="vidas">
-            <img class="heart" src="images/heart.svg">
-            <!-- <br style="clear:both;" /> -->
-            <img class="heart" src="images/heart.svg">
-            <!-- <br style="clear:both;" /> -->
-            <img class="heart" src="images/heart.svg">
+        <div class="lives__container">
         </div>
         <div id="zombies">
-             <span id="number">""</span>
+             <span class="to-win"></span>
         </div>
+        <p class="level"></p>
      </div>
+     <!-- /*100 de alto y 100 de ancho y background negro transparente*/ -->
+     <!-- <div id="game-over"> 
+      <div>
+        <h1>game over</h1> 
+        <p>Gracias por jugar</p>
+      </div> 
+      <div>
+         <button id="home">Home</button>
+      </div> -->
+
+     <!-- </div> -->
  </header>
   <script src="game.js"></script>
 </body>
