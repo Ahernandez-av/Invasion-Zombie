@@ -4,6 +4,7 @@ canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 
 const $restart = document.querySelector('#restart')
+const $gameOver = document.querySelector('.game-over')
 
 const $levelDisplay = document.querySelector(".level")
 const $zombiesToWin = document.querySelector('.to-win')
@@ -25,6 +26,8 @@ let lives = 3
 
 let frames = 0
 let charactersInterval
+
+let selectedZombies = []
 
 
 class Zombie {
@@ -66,20 +69,21 @@ class Zombie {
       if (this.x < $canvas.width + this.width) this.x += this.speed
       else {
         this.x = 0 - this.width
-        this.y = Math.random() * $canvas.height - this.height //-height is to be sure that it wont spawn to low
+        this.y = Math.random() * (($canvas.height - this.height) - 0) //-height is to be sure that it wont spawn to low
       }
     } else if (this.action === 'left') {
       if (this.x > 0 - this.height) this.x -= this.speed
       else {
         this.x = $canvas.width + this.height
-        this.y = Math.random() * $canvas.height - this.height
+        this.y = Math.random() * (($canvas.height - this.height) - 0)
       }
-    } else if (this.action === 'down right') {
-      if (this.y + this.height < $canvas.height + this.height || this.x + this.width < $canvas.width + this.width) {
-        this.y += this.speed
-        this.x += this.speed
-      }
-    }
+    } 
+    // if (this.action === 'down right') {
+    //   if (this.y + this.height < $canvas.height + this.height || this.x + this.width < $canvas.width + this.width) {
+    //     this.y += this.speed
+    //     this.x += this.speed
+    //   }
+    // }
   }
 }
 
@@ -113,6 +117,10 @@ class Jimmy extends Zombie {
       removeLife()
     }
   }
+}
+
+function clearSelected(){
+  selectedZombies= []
 }
 
 
@@ -155,6 +163,7 @@ function animate() {
       if (e.delete) {
         e.applyEffect()
         characters.splice(e.index, 1)
+        clearSelected()
       }
     }
   })
@@ -264,7 +273,6 @@ function removeLife(){
   let $hearts = document.querySelectorAll('.heart')
 
   if ($hearts.length > 0) {
-    console.log($lifeContainer)
     $lifeContainer.removeChild($hearts[$hearts.length-1])
   }
   $hearts = document.querySelectorAll('.heart')
@@ -286,8 +294,7 @@ function startGame(){
 
 function stopGame(){
     clearInterval(charactersInterval);
-    game = false
-    $restart.classList.add('visible')
+    $gameOver.style.display = 'block'
 }
 
 function restart(){
@@ -318,9 +325,11 @@ canvas.addEventListener('click', (e) => {
   characters.forEach((character, index) => {
     if (isIntersect(pos, character)) {
       console.log('hit an element')
-      console.log(character)
-      character.click = true
-      character.index = index
+      if (selectedZombies.length < 1) {
+        character.click = true
+        character.index = index
+        selectedZombies.push(1)
+      }
     }
   });
 });
