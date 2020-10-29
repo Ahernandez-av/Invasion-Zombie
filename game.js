@@ -407,7 +407,7 @@ function resetLevel(){
 }
 
 function levelChangeScreen(obj) {
-  const $levelText = document.querySelector('#level-change #number')
+  const $levelText = document.querySelector('#number')
   if (currentLevel > 0) {
     $levelText.innerHTML = obj.levelName
     $levelChange.style.display = 'flex'
