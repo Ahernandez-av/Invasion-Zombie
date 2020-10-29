@@ -21,7 +21,6 @@ body {
   z-index: 200;
   width: 100%;
   height: 100%;
-  background-color: black;
   font-size: 2em;
 }
 
@@ -34,7 +33,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  top:10px;
+  top:20px;
   left: 5px;
 }
 
@@ -51,7 +50,7 @@ body {
   width: 75;
   height: 30;
   left: 130px;
-  top:10px;
+  top:20px;
 }
 
 .to-win {
@@ -75,18 +74,6 @@ body {
   top: 5px;
 }
 
-#start{
-  position: absolute;
-  z-index: 200;
-  left: 50%;
-  top: 50%;
-  background-image: url("images/button.svg");
-  background-repeat: no-repeat;
-  color: white;
-  cursor: pointer;
-  width: 95; 
-  height: 41;
-}
 
 .visible {
   display: block;
@@ -127,34 +114,31 @@ body {
   background-image: url("images/Tittle.svg");
   display: flex;
   justify-content: center;
-  /* align-content: center; */
   flex-direction: column;
   align-items: center;
-  /* align-self: center; */
   width: 350; 
   height: 231;
-  /* position: absolute; */
-  /* top: 150px;
-  left: 550px; */
 }
 
-a {
+
+.btn {
   background-image: url("images/button.svg");
   background-size: 100% 100%;
+  /* height: 90px; */
   color: white;
   cursor: pointer;
-  width: 95px; 
-  height: 41px;
+  padding: 30px;
   text-decoration: none;
   text-align: center;
-  padding: 10px;
-  margin: 0 10px;
+  margin: 0 20px;
 }
 
 .gameover-buttons{
    display: flex;
-   margin-top:10px;
-   
+   margin-top: 10px; 
+   align-items: center;
+   justify-content: center; 
+   width: 100%;
 }
 
 #canvas {
@@ -164,4 +148,107 @@ a {
   width: 100%;
   height: 100%;
 }
+
+/*How to play*/
+
+#how-to-play{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  z-index:200;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.how-to-play-container {
+  display: flex;
+  flex-direction: column;
+  background-image: url("images/credits-background.svg");
+  /* background-repeat: no-repeat; */
+  background-size: 100% 100%;
+  width: 563; 
+  height: 680;
+  /* padding:0 280px; */
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.text{
+  padding-bottom:25px;
+}
+
+.item {
+  width: 400px;
+  display: flex;
+  align-items: center;
+
+}
+
+.item img {
+  width: 50px;
+  height: 50px;
+
+}
+
+.item .special {
+  width: 30px;
+  height: 30px; 
+  margin: 0 10px;
+}
+
+h1{
+  margin: 0;
+  margin-top: 45px;
+
+}
+
+.how-to-play-container #close{
+  margin-top: 60px;
+  
+}
+
+button {
+ font-family: 'Jolly Lodger', cursive;
+ font-size: 18px;
+  appearance: none;
+  border:none;
+  background-color: transparent;
+  outline: none;
+}
+
+/*level screen */
+
+#level-change{
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 200;
+}
+
+
+.level-number {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("images/level-screen.svg");
+  background-size: 100%;
+  height: 100px;
+  width: 250px;
+}
+
+#number{
+  margin-top: 52px;
+  font-size: 32px;
+}
+
+
+
+
 

@@ -8,7 +8,6 @@
 </head>
 <body>
   <header>
-
     <div class="floor"></div>
      <canvas id="canvas"></canvas>
      <div>
@@ -22,19 +21,63 @@
 
      <div class="game-over"> 
        <div class="gameover-container">
-         
            <div class="gameover-message">
                <h1>Game Over</h1> 
                <p>Gracias por jugar</p>
             </div>
-           <div  class ="gameover-buttons">
-               <a id="restart">Restart</a>
-               <a id="home" href="index.html">Home</a>
+           <div class ="gameover-buttons">
+               <a class="btn" id="restart">Restart</a>
+               <a class="btn" id="home" href="index.html">Home</a>
            </div> 
-
        </div>
-      
      </div>
+
+     <div id="how-to-play">
+      <div class="how-to-play-container">
+          <h1>¿Cómo jugar?</h1>
+          <p class="text">Debes darle click a los zombies para destriparlos</p>
+        
+          <div class="item">
+            <img class="special" src="images/heart.svg">
+            <p>Si te quedas sin vidas la humanidad estará perdida</p>
+          </div>
+
+          <div class="item">
+            <img class="special" src="images/skull.svg">
+            <p>Cada nivel tiene una cantidad de zombies a destripar</p>
+          </div>
+
+          <div class="item">
+            <img src="images/jimmy-headshots.svg">
+            <p>Jimmy: Quita una vida o al morir vale como un zombie destripado</p>
+          </div>
+
+          <div class="item">
+            <img src="images/Cindy-headshots.svg">
+            <p>Cindy: Agrega un zombie o al morir vale como un zombie destripado</p>
+          </div>
+
+          <div class="item">
+            <img src="images/John-headshots.svg">
+            <p>John: Agrega dos zombie o al morir vale como dos zombies destripados </p>
+          </div>
+
+          <div class="item">
+            <img src="images/bill-headshots.svg">
+            <p>Bill: Quita dos vidas o al morir vale como dos zombies destripados</p>
+          </div >
+
+          <div class="item">
+            <img src="images/Medium-headshots.svg">
+            <p>Medium: Es un zombie especial, puedes perder o pasar de nivel. </p>
+          </div>
+          <button id="close" class="btn" href="#">Start</button> 
+       </div>
+   </div>
+       <div id="level-change">
+         <div class="level-number"><p id="number">kjhgfdsnjhbgvfc</p> </div> 
+       </div>
+       
  </header>
   <script src="game.js"></script>
 </body>
