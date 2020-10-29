@@ -5,6 +5,8 @@ canvas.width = window.innerWidth
 
 const $restart = document.querySelector('#restart')
 const $gameOver = document.querySelector('.game-over')
+const $close = document.querySelector('#close')
+const $levelChange = document.querySelector('#level-change')
 
 const $levelDisplay = document.querySelector(".level")
 const $zombiesToWin = document.querySelector('.to-win')
@@ -369,6 +371,8 @@ const levels = [
 function setLevel(levels){
   let level = levels[currentLevel]
   console.log(level.levelName)
+  //change level screen
+  levelChangeScreen(level)
   //clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   //set lives
@@ -400,6 +404,17 @@ function resetLevel(){
   characters = []
   //set new level
   setLevel(levels)
+}
+
+function levelChangeScreen(obj) {
+  const $levelText = document.querySelector('#level-change #number')
+  if (currentLevel > 0) {
+    $levelText.innerHTML = obj.levelName
+    $levelChange.style.display = 'flex'
+    setTimeout(function(){
+      $levelChange.style.display = 'none'
+    }, 2000);
+  }
 }
 
 function createZombies(obj){
@@ -552,6 +567,10 @@ canvas.addEventListener('click', (e) => {
 
 $restart.addEventListener('click', restart)
 
+$close.addEventListener('click', function(){
+  const $howToPlay = document.querySelector('#how-to-play')
+  $howToPlay.style.display = 'none'
+})
 
 //to prevent resizing issues
 window.addEventListener('resize', function(){

@@ -157,6 +157,27 @@ a {
    
 }
 
+#how-to-play{
+  position: absolute;
+  z-index: 200;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#level-change{
+  position: absolute;
+  z-index: 200;
+  width: 100%;
+  height: 100%;
+  display: none;
+  /* display flex */
+  justify-content: center;
+  align-items: center;
+}
+
 #canvas {
   position: absolute;
   top: 0;
