@@ -16,9 +16,18 @@ images.jimmy = new Image() // we call the images object for the images object
 images.jimmy.src = 'images/jimmy.png' //here we set the src to be stylesheet
 images.cindy = new Image()
 images.cindy.src = 'images/cindy.png'
+images.jhon = new Image()
+images.jhon.src = 'images/jhon.png'
+images.bill = new Image()
+images.bill.src = 'images/bill.png'
+images.medium = new Image()
+images.medium.src = 'images/medium.png'
 
 const jimmy = images.jimmy
 const cindy = images.cindy
+const jhon = images.jhon
+const bill = images.bill
+const medium = images.medium
 
 
 const characterMovement = ['left', 'right']
@@ -35,15 +44,12 @@ let selectedZombies = []
 
 
 class Zombie {
-  constructor(zombieType) {
+  constructor(width, height, frameYLeft, frameYRight, maxFrame, zombieType) {
     this.index = null
     this.zombieSheet = zombieType
-    this.width = 115.666667
-    this.height = 110.75
+    this.width = width
+    this.height = height
     this.frameX = 0
-    // this.actionX = actionX
-    // this.actionY = actionY
-    // this.actionMax = actionMax
     this.delete = false
     this.click = false
     this.x = Math.random() * $canvas.width
@@ -51,11 +57,11 @@ class Zombie {
     this.speed = (Math.random() * 0.5) + 3.5
     this.action = characterMovement[Math.floor(Math.random() * characterMovement.length)]
     if (this.action === 'left') {
-      this.frameY = 0
-      this.maxFrame = 8
+      this.frameY = frameYLeft
+      this.maxFrame = maxFrame
     } else if (this.action === 'right'){
-      this.frameY = 2
-      this.maxFrame = 8
+      this.frameY = frameYRight
+      this.maxFrame = maxFrame
     }
   }
   draw(){
@@ -66,7 +72,7 @@ class Zombie {
       )
 
       if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = 3
+      else this.frameX = 0
   }
   update(){
     if (this.action === 'right') {
@@ -92,8 +98,8 @@ class Zombie {
 }
 
 class Jimmy extends Zombie {
-  constructor(type, zombieType = jimmy) {
-    super(zombieType)
+  constructor(type, width = 115.666667, height = 110.75, frameYLeft = 0, frameYRight = 2, maxFrame = 8, zombieType = jimmy) {
+    super(width, height, frameYLeft, frameYRight, maxFrame, zombieType)
     this.type = type
     this.actionX = 0
     if (this.type == 'good') {
@@ -116,16 +122,16 @@ class Jimmy extends Zombie {
   }
   applyEffect(){
     if (this.type == 'good') {
-      removeZombie()
+      removeZombie(1)
     } else {
-      removeLife()
+      removeLife(1)
     }
   }
 }
 
 class Cindy extends Zombie {
-  constructor(type, zombieType = cindy) {
-    super(zombieType)
+  constructor(type, width = 115.666667, height = 110.75, frameYLeft = 0, frameYRight = 2, maxFrame = 8, zombieType = cindy) {
+    super(width, height, frameYLeft, frameYRight, maxFrame, zombieType)
     this.type = type
     this.actionX = 0
     if (this.type == 'good') {
@@ -148,13 +154,108 @@ class Cindy extends Zombie {
   }
   applyEffect(){
     if (this.type == 'good') {
-      removeZombie()
+      removeZombie(1)
     } else {
-      addZombie()
+      addZombie(1)
     }
   }
 }
 
+class Jhon extends Zombie {
+  constructor(type, width = 115.666667, height = 110.75, frameYLeft = 0, frameYRight = 2, maxFrame = 7, zombieType = jhon) {
+    super(width, height, frameYLeft, frameYRight, maxFrame, zombieType)
+    this.type = type
+    this.actionX = 0
+    if (this.type == 'good') {
+      this.actionY = 3
+      this.actionMax = 7
+    } else if(this.type == 'bad') {
+      this.actionY = 1
+      this.actionMax = 7
+    }
+  }
+  drawAction(){
+    drawSprite(
+      this.zombieSheet,
+      this.width * this.actionX, this.height * this.actionY, this.width, this.height,
+      this.x, this.y, this.width, this.height
+      )
+
+      if (this.actionX < this.actionMax) this.actionX++;
+      else this.delete = true
+  }
+  applyEffect(){
+    if (this.type == 'good') {
+      removeZombie(2)
+    } else {
+      addZombie(2)
+    }
+  }
+}
+
+class Bill extends Zombie {
+  constructor(type, width = 115.666667, height = 136, frameYLeft = 0, frameYRight = 2, maxFrame = 7, zombieType = bill) {
+    super(width, height, frameYLeft, frameYRight, maxFrame, zombieType)
+    this.type = type
+    this.actionX = 0
+    if (this.type == 'good') {
+      this.actionY = 3
+      this.actionMax = 7
+    } else if(this.type == 'bad') {
+      this.actionY = 1
+      this.actionMax = 6
+    }
+  }
+  drawAction(){
+    drawSprite(
+      this.zombieSheet,
+      this.width * this.actionX, this.height * this.actionY, this.width, this.height,
+      this.x, this.y, this.width, this.height
+      )
+
+      if (this.actionX < this.actionMax) this.actionX++;
+      else this.delete = true
+  }
+  applyEffect(){
+    if (this.type == 'good') {
+      removeZombie(2)
+    } else {
+      removeLife(2)
+    }
+  }
+}
+
+class Medium extends Zombie {
+  constructor(type, width = 115.7, height = 65.5, frameYLeft = 0, frameYRight = 2, maxFrame = 9, zombieType = medium) {
+    super(width, height, frameYLeft, frameYRight, maxFrame, zombieType)
+    this.type = type
+    this.actionX = 0
+    if (this.type == 'good') {
+      this.actionY = 3
+      this.actionMax = 3
+    } else if(this.type == 'bad') {
+      this.actionY = 1
+      this.actionMax = 5
+    }
+  }
+  drawAction(){
+    drawSprite(
+      this.zombieSheet,
+      this.width * this.actionX, this.height * this.actionY, this.width, this.height,
+      this.x, this.y, this.width, this.height
+      )
+
+      if (this.actionX < this.actionMax) this.actionX++;
+      else this.delete = true
+  }
+  applyEffect(){
+    if (this.type == 'good') {
+      removeZombie(zombiesToWin)
+    } else {
+      removeLife(3)
+    }
+  }
+}
 
 
 // //create characters
@@ -208,8 +309,8 @@ const levels = [
     zombies: 10,
     zombiesToWin: 5,
     jimmy: {
-      good: 6,
-      bad:4
+      good: 7,
+      bad:3
     }
   },
   {
@@ -217,12 +318,50 @@ const levels = [
     zombies: 15,
     zombiesToWin: 7,
     jimmy: {
-      good: 6,
-      bad:4
+      good: 7,
+      bad:3
     },
     cindy: {
-      good: 3,
+      good: 4,
+      bad: 2
+    }
+  },
+  {
+    levelName: "level 3",
+    zombies: 18,
+    zombiesToWin: 9,
+    jimmy: {
+      good: 6,
+      bad:3
+    },
+    cindy: {
+      good: 4,
       bad:2
+    },
+    jhon: {
+      good: 2,
+      bad:1
+    }
+  },
+  {
+    levelName: "level 4",
+    zombies: 18,
+    zombiesToWin: 9,
+    jimmy: {
+      good: 6,
+      bad:3
+    },
+    cindy: {
+      good: 4,
+      bad:2
+    },
+    jhon: {
+      good: 2,
+      bad:1
+    },
+    bill: {
+      good: 2,
+      bad:1
     }
   }
 ]
@@ -280,7 +419,37 @@ function createZombies(obj){
       characters.push(new Cindy('bad'))
     }
   }
+  if ('jhon' in obj) {
+    for (let i = 0; i < obj.cindy.good; i++) {
+      characters.push(new Jhon('good'))
+    }
+    for (let i = 0; i < obj.cindy.bad; i++) {
+      characters.push(new Jhon('bad'))
+    }
+  }
+  if ('bill' in obj) {
+    for (let i = 0; i < obj.cindy.good; i++) {
+      characters.push(new Bill('good'))
+    }
+    for (let i = 0; i < obj.cindy.bad; i++) {
+      characters.push(new Bill('bad'))
+    }
+  }
+  randomMedium()
   console.log(characters.length)
+}
+
+function randomMedium(){
+  console.log('lucky You')
+  const mediumType = ['good', 'bad']
+  const random = Math.floor(Math.random() * 10)
+  const randomType = mediumType[Math.floor(Math.random() * characterMovement.length)]
+  console.log(random)
+  console.log(randomType)
+
+  if (random >= 3 && random < 7) {
+    characters.push(new Medium(randomType))
+  }
 }
 
 function setLives(){
@@ -302,24 +471,28 @@ function resetLives(){
 }
 
 
-function removeLife(){
+function removeLife(num){
   let $hearts = document.querySelectorAll('.heart')
+  let child = $lifeContainer.lastElementChild
+  let counter = 0
 
-  if ($hearts.length > 0) {
-    $lifeContainer.removeChild($hearts[$hearts.length-1])
+  while ($hearts.length > 0 && counter < num) {
+    $lifeContainer.removeChild(child)
+    child = $lifeContainer.lastElementChild
+    counter++
   }
   $hearts = document.querySelectorAll('.heart')
   if($hearts.length == 0) stopGame()
 }
 
-function removeZombie(){
-  zombiesToWin--
+function removeZombie(num){
+  zombiesToWin -= num
   $zombiesToWin.innerHTML = zombiesToWin
   if (zombiesToWin == 0) resetLevel()
 }
 
-function addZombie(){
-  zombiesToWin++
+function addZombie(num){
+  zombiesToWin += num
   $zombiesToWin.innerHTML = zombiesToWin
 }
 
