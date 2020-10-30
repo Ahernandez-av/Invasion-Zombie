@@ -106,10 +106,10 @@ class Jimmy extends Zombie {
     this.actionX = 0
     if (this.type == 'good') {
       this.actionY = 3
-      this.actionMax = 10
+      this.actionMax = 19
     } else if(this.type == 'bad') {
       this.actionY = 1
-      this.actionMax = 10
+      this.actionMax = 15
     }
   }
   drawAction(){
@@ -138,10 +138,10 @@ class Cindy extends Zombie {
     this.actionX = 0
     if (this.type == 'good') {
       this.actionY = 3
-      this.actionMax = 10
+      this.actionMax = 19
     } else if(this.type == 'bad') {
       this.actionY = 1
-      this.actionMax = 10
+      this.actionMax = 15
     }
   }
   drawAction(){
@@ -170,10 +170,10 @@ class Jhon extends Zombie {
     this.actionX = 0
     if (this.type == 'good') {
       this.actionY = 3
-      this.actionMax = 7
+      this.actionMax = 16
     } else if(this.type == 'bad') {
       this.actionY = 1
-      this.actionMax = 7
+      this.actionMax = 16
     }
   }
   drawAction(){
@@ -202,10 +202,10 @@ class Bill extends Zombie {
     this.actionX = 0
     if (this.type == 'good') {
       this.actionY = 3
-      this.actionMax = 7
+      this.actionMax = 16
     } else if(this.type == 'bad') {
       this.actionY = 1
-      this.actionMax = 6
+      this.actionMax = 15
     }
   }
   drawAction(){
@@ -234,10 +234,10 @@ class Medium extends Zombie {
     this.actionX = 0
     if (this.type == 'good') {
       this.actionY = 3
-      this.actionMax = 3
+      this.actionMax = 12
     } else if(this.type == 'bad') {
       this.actionY = 1
-      this.actionMax = 5
+      this.actionMax = 14
     }
   }
   drawAction(){
@@ -311,8 +311,8 @@ const levels = [
     zombies: 10,
     zombiesToWin: 5,
     jimmy: {
-      good: 7,
-      bad:3
+      good: 8,
+      bad:2
     }
   },
   {
@@ -320,12 +320,12 @@ const levels = [
     zombies: 15,
     zombiesToWin: 7,
     jimmy: {
-      good: 7,
-      bad:3
+      good: 8,
+      bad:2
     },
     cindy: {
       good: 4,
-      bad: 2
+      bad: 1
     }
   },
   {
@@ -334,27 +334,27 @@ const levels = [
     zombiesToWin: 9,
     jimmy: {
       good: 6,
-      bad:3
+      bad:2
     },
     cindy: {
       good: 4,
       bad:2
     },
     jhon: {
-      good: 2,
+      good: 3,
       bad:1
     }
   },
   {
     levelName: "level 4",
     zombies: 18,
-    zombiesToWin: 9,
+    zombiesToWin: 10,
     jimmy: {
-      good: 6,
-      bad:3
+      good: 3,
+      bad:5
     },
     cindy: {
-      good: 4,
+      good: 2,
       bad:2
     },
     jhon: {
@@ -362,8 +362,8 @@ const levels = [
       bad:1
     },
     bill: {
-      good: 2,
-      bad:1
+      good: 1,
+      bad:2
     }
   }
 ]
